@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyLearning Plan - Platform Perangkat Ajar & PJJ Interaktif</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans, Amiri & Scheherazade New -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            850: '#036246',
+                            900: '#047857',
+                            950: '#02422f'
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309'
+                        },
+                        teal: {
+                            800: '#115e59',
+                            900: '#0f766e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        arabic: ['Amiri', 'Scheherazade New', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Geometric Pattern Background */
+        .bg-pattern {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#047857 0.5px, transparent 0.5px), radial-gradient(#d97706 0.5px, #f8fafc 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            background-opacity: 0.03;
+        }
+
+        /* Standard A4 Paper Simulation */
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 18mm 16mm;
+            margin: auto;
+            background: white;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            box-sizing: border-box;
+            border-top: 5px solid #047857;
+        }
+
+        @media screen and (max-width: 850px) {
+            .a4-page {
+                width: 100%;
+                min-height: auto;
+                padding: 15px;
+            }
+        }
+
+        /* High-Precision Print CSS */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .a4-page {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 12mm 12mm !important;
+                box-shadow: none !important;
+                border-top: none !important;
+                page-break-after: always;
+            }
+            .print-break-inside-avoid {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #047857;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="font-sans text-slate-800 bg-slate-50 min-h-screen flex flex-col bg-pattern">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Header Navigation -->
+    <header class="bg-gradient-to-r from-emerald-900 via-emerald-850 to-teal-900 text-white shadow-lg sticky top-0 z-40 border-b-2 border-gold-500 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gold-500 flex items-center justify-center text-emerald-950 font-bold text-xl shadow-md border border-gold-400">
+                    <i class="fa-solid fa-graduation-cap text-emerald-950"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        MyLearning Plan <span class="text-xs px-2 py-0.5 rounded bg-gold-500 text-emerald-950 font-extrabold uppercase tracking-wide">Pro</span>
+                    </h1>
+                    <p class="text-xs text-emerald-200 font-medium">Platform Perangkat Ajar & Pembelajaran Mendalam / PJJ Interaktif</p>
+                </div>
+            </div>
+
+            <!-- Role Tabs -->
+            <nav class="flex rounded-xl bg-emerald-950/60 p-1 border border-emerald-700/50">
+                <button onclick="switchTab('guru')" id="tab-btn-guru" class="tab-btn active px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all bg-gold-500 text-emerald-950 shadow">
+                    <i class="fa-solid fa-chalkboard-user"></i> Tab Guru
+                </button>
+                <button onclick="switchTab('ortu')" id="tab-btn-ortu" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all text-emerald-100 hover:bg-emerald-800/50">
+                    <i class="fa-solid fa-users-between-lines"></i> Orang Tua
+                </button>
+                <button onclick="switchTab('murid')" id="tab-btn-murid" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all text-emerald-100 hover:bg-emerald-800/50">
+                    <i class="fa-solid fa-child-reaching"></i> Ruang Murid
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ========================================== -->
+        <!-- TAB 1: GURU (PERANGKAT AJAR & PREVIEW A4) -->
+        <!-- ========================================== -->
+        <div id="tab-guru" class="tab-content block">
+            <div class="mb-4 flex flex-wrap justify-between items-center gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm no-print">
+                <div>
+                    <h2 class="text-lg font-bold text-emerald-900 flex items-center gap-2">
+                        <i class="fa-solid fa-pen-ruler text-gold-600"></i> Perancang Perangkat Ajar & Pembelajaran Mendalam
+                    </h2>
+                    <p class="text-xs text-slate-500">Lengkapi data untuk menghasilkan Modul Ajar adaptif berbasis alur sintaks pembelajaran pilihan.</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="loadSampleData()" class="px-3.5 py-2 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-300 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-wand-magic-sparkles text-gold-600"></i> Contoh PJJ Polusi Udara
+                    </button>
+                    <button onclick="generateModule()" class="px-4 py-2 bg-emerald-900 hover:bg-emerald-850 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition shadow-sm">
+                        <i class="fa-solid fa-arrows-rotate"></i> Update Preview
+                    </button>
+                    <button onclick="window.print()" class="px-4 py-2 bg-gold-500 hover:bg-gold-600 text-emerald-950 font-bold rounded-lg text-xs flex items-center gap-1.5 transition shadow">
+                        <i class="fa-solid fa-print"></i> Cetak / Unduh PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2-Column Grid: Form & Live A4 Preview -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                <!-- LEFT COLUMN: Form Generator -->
+                <div class="lg:col-span-5 space-y-5 bg-white p-5 rounded-xl border border-slate-200 shadow-sm no-print max-h-[85vh] overflow-y-auto">
+                    
+                    <!-- Section A: Kategori & Identitas Lembaga -->
+                    <div class="border-b border-slate-100 pb-4">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-800 mb-3 flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] flex items-center justify-center font-extrabold">1</span>
+                            Kategori & Identitas Satuan Pendidikan
+                        </h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <!-- Toggle Kategori Lembaga -->
+                            <div class="col-span-2 bg-emerald-50/60 p-3 rounded-lg border border-emerald-200">
+                                <label class="block text-xs font-bold text-emerald-950 mb-1">Kategori Lembaga Pendidikan</label>
+                                <select id="input-kategori-lembaga" onchange="toggleKategoriLembaga()" class="w-full text-xs p-2 rounded-lg border border-emerald-400 bg-white font-bold text-emerald-900 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                                    <option value="madrasah" selected>🕌 Madrasah (Kemenag - Dengan Panca Cinta)</option>
+                                    <option value="sekolah">🏫 Sekolah Umum (Kemendikbudristek)</option>
+                                </select>
+                            </div>
+
+                            <div class="col-span-2">
+                                <label class="block text-xs font-medium text-slate-700 mb-1" id="lbl-nama-madrasah">Nama Madrasah / Sekolah</label>
+                                <input type="text" id="input-madrasah" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none" value="MTs Negeri 1 Kota Padang">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Status Lembaga</label>
+                                <select id="input-jenis" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                                    <option value="Negeri" selected>Negeri</option>
+                                    <option value="Swasta">Swasta</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Jenjang Pendidikan</label>
+                                <select id="input-jenjang" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                                    <option value="RA / TK">RA / TK</option>
+                                    <option value="MI / SD">MI / SD</option>
+                                    <option value="MTs / SMP" selected>MTs / SMP</option>
+                                    <option value="MA / SMA / SMK">MA / SMA / SMK</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Kelas</label>
+                                <input type="text" id="input-kelas" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none" value="VII (Tujuh)">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Mata Pelajaran</label>
+                                <input type="text" id="input-mapel" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none" value="IPA Terpadu (PjBL Tematik)">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Nama Guru</label>
+                                <input type="text" id="input-guru" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none" value="Ahmad Fauzi, S.Pd., M.Pd.">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">NIP Guru</label>
+                                <input type="text" id="input-nip-guru" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none" value="19850412 201001 1 008">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Kepala Sekolah/Madrasah</label>
+                                <input type="text" id="input-kepala" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none" value="Dr. H. M. Ridwan, M.Ag.">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">NIP Kepala</label>
+                                <input type="text" id="input-nip-kepala" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none" value="19720815 199803 1 003">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section B: Alur Model & Durasi -->
+                    <div class="border-b border-slate-100 pb-4">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-800 mb-3 flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] flex items-center justify-center font-extrabold">2</span>
+                            Model & Sintaks Pembelajaran
+                        </h3>
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Pertemuan Ke-</label>
+                                <input type="text" id="input-pertemuan" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none" value="1 s.d 5 (Pekan PJJ Darurat)">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Durasi Pertemuan</label>
+                                <input type="text" id="input-durasi" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none" value="5 Hari (Asinkron & Sync 30 mnt/hari)">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Pilih Model & Sintaks Pembelajaran</label>
+                            <select id="input-model" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none font-semibold text-emerald-900 bg-emerald-50/50">
+                                <option value="model-arka" selected>1. Deep Learning (Alur ARKA: Aktivitas - Refleksi - Konseptualisasi - Aksi)</option>
+                                <option value="model-3m">2. Deep Learning (Alur 3M: Memahami - Mengaplikasikan - Merefleksi)</option>
+                                <option value="model-pjbl">3. Project-Based Learning / PjBL (6 Sintaks Utama)</option>
+                                <option value="model-pbl">4. Problem-Based Learning / PBL (5 Sintaks Utama)</option>
+                                <option value="model-5e">5. Inquiry Learning (Alur 5E: Engage, Explore, Explain, Elaborate, Evaluate)</option>
+                                <option value="model-discovery">6. Discovery Learning (6 Tahap Penemuan)</option>
+                                <option value="model-gamified">7. Experiential / Gamified Learning (Challenge & Debrief)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Section C: CP, TP, IKTP, Materi -->
+                    <div class="border-b border-slate-100 pb-4 space-y-3">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-800 mb-1 flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] flex items-center justify-center font-extrabold">3</span>
+                            Substansi Pembelajaran
+                        </h3>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Capaian Pembelajaran (CP)</label>
+                            <textarea id="input-cp" rows="2" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none">Peserta didik mampu menganalisis pengaruh polusi udara terhadap kesehatan organ pernapasan manusia dan merancang solusi teknologi sederhana penapis udara secara kreatif dan bermakna.</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Tujuan Pembelajaran (TP)</label>
+                            <textarea id="input-tp" rows="2" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none">1. Menganalisis tingkat AQI lokal dan dampaknya terhadap tubuh.&#10;2. Membuat prototype penapis udara (DIY Air Purifier) dari bahan hemat lingkungan.&#10;3. Menyusun pesan imbauan hidup sehat sebagai bentuk kepedulian sesama.</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Indikator Ketercapaian TP (IKTP)</label>
+                            <textarea id="input-iktp" rows="2" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none">1. Siswa dapat mencatat data AQI 3 hari berturut-turut.&#10;2. Siswa berhasil merakit filter udara sederhana.&#10;3. Siswa dapat mempresentasikan refleksi hikmah menjaga kelestarian lingkungan.</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Materi Ajar / Pokok Bahasan</label>
+                            <input type="text" id="input-materi" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none" value="Dampak Polutan PM2.5 & Pembuatan Filter Udara Sederhana (PjBL Terpadu PJJ)">
+                        </div>
+                    </div>
+
+                    <!-- Section D: Integrasi Nilai & Profil Lulusan -->
+                    <div class="border-b border-slate-100 pb-4 space-y-3">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-800 mb-1 flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] flex items-center justify-center font-extrabold">4</span>
+                            Integrasi Nilai & 8 Dimensi DPL
+                        </h3>
+
+                        <!-- Panca Cinta Madrasah Checkboxes (Conditionally Hidden for Sekolah) -->
+                        <div id="container-panca-cinta" class="bg-emerald-50/50 p-2.5 rounded-lg border border-emerald-100">
+                            <label class="block text-xs font-semibold text-emerald-950 mb-2 flex items-center justify-between">
+                                <span><i class="fa-solid fa-kaaba text-gold-600 mr-1"></i> Integrasi Panca Cinta (Khusus Madrasah):</span>
+                                <span class="text-[10px] bg-emerald-700 text-white px-1.5 py-0.5 rounded font-mono">Kemenag</span>
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs">
+                                <label class="flex items-center gap-2"><input type="checkbox" class="panca-cinta-cb accent-emerald-700" value="Cinta Allah & Rasul" checked> Cinta Allah & Rasul</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" class="panca-cinta-cb accent-emerald-700" value="Cinta Ilmu" checked> Cinta Ilmu</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" class="panca-cinta-cb accent-emerald-700" value="Cinta Orang Tua & Guru" checked> Cinta Orang Tua & Guru</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" class="panca-cinta-cb accent-emerald-700" value="Cinta Diri & Sesama" checked> Cinta Diri & Sesama</label>
+                                <label class="flex items-center gap-2 sm:col-span-2"><input type="checkbox" class="panca-cinta-cb accent-emerald-700" value="Cinta Tanah Air & Lingkungan" checked> Cinta Tanah Air & Lingkungan</label>
+                            </div>
+                        </div>
+
+                        <!-- 8 Dimensi Profil Lulusan (DPL) -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-2">8 Dimensi Profil Lulusan (DPL):</label>
+                            <div class="grid grid-cols-2 gap-1.5 text-xs">
+                                <label class="flex items-center gap-2"><input type="checkbox" class="dpl-cb accent-gold-600" value="Keimanan & Ketakwaan" checked> Keimanan & Ketakwaan</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" class="dpl-cb accent-gold-600" value="Penalaran Kritis" checked> Penalaran Kritis</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" class="dpl-cb accent-gold-600" value="Kreativitas" checked> Kreativitas</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" class="dpl-cb accent-gold-600" value="Kolaborasi" checked> Kolaborasi</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" class="dpl-cb accent-gold-600" value="Kemandirian" checked> Kemandirian</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" class="dpl-cb accent-gold-600" value="Kesehatan & Kebugaran" checked> Kesehatan & Kebugaran</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" class="dpl-cb accent-gold-600" value="Kewarganegaraan" checked> Kewarganegaraan</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" class="dpl-cb accent-gold-600" value="Komunikasi" checked> Komunikasi</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section E: Tantangan Khusus & Pengesahan -->
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-800 mb-3 flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] flex items-center justify-center font-extrabold">5</span>
+                            Tantangan & Tempat Pengesahan
+                        </h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Tantangan Khusus Kelas / PJJ</label>
+                                <input type="text" id="input-tantangan" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none" value="Pembelajaran Jarak Jauh (PJJ) Darurat Polusi Udara Buruk & Pembatasan Aktivitas Outdoor">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Tempat & Tanggal Penetapan</label>
+                                <input type="text" id="input-tanggal" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none" value="Lubuk Basung, 16 September 2026">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="generateModule()" class="w-full py-3 bg-gradient-to-r from-emerald-900 to-teal-900 hover:from-emerald-850 hover:to-teal-800 text-white font-bold text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-file-export text-gold-400"></i> Generate Perangkat Ajar A4
+                    </button>
+                </div>
+
+                <!-- RIGHT COLUMN: Printable A4 Live Preview -->
+                <div class="lg:col-span-7 w-full flex justify-center">
+                    <div id="print-area" class="a4-page font-sans text-slate-900 leading-relaxed text-xs">
+                        
+                        <!-- Header / Kop Document -->
+                        <div class="border-b-2 border-slate-900 pb-3 mb-4 text-center relative">
+                            <p id="preview-bismillah" class="font-arabic text-xl font-bold text-emerald-900 mb-1">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+                            <h2 class="text-sm font-extrabold uppercase tracking-widest text-emerald-950" id="preview-madrasah">MTS NEGERI 1 KOTA PADANG</h2>
+                            <p class="text-[11px] font-medium text-slate-600" id="preview-sub-header">PERANGKAT AJAR PEMBELAJARAN MENDALAM (DEEP LEARNING)</p>
+                            <p class="text-[10px] italic text-gold-700 font-semibold" id="preview-tantangan-badge">Tantangan: PJJ Darurat Polusi Udara</p>
+                            <div class="w-full h-0.5 bg-gold-600 mt-2"></div>
+                        </div>
+
+                        <!-- Tabel Identitas Rapi -->
+                        <table class="w-full border-collapse mb-4 text-[11px]">
+                            <tbody>
+                                <tr class="border-b border-slate-200">
+                                    <td class="py-1 font-semibold text-slate-700 w-1/4">Mata Pelajaran</td>
+                                    <td class="py-1 w-2">:</td>
+                                    <td class="py-1 font-bold text-emerald-900" id="preview-mapel">IPA Terpadu (PjBL Tematik)</td>
+                                    <td class="py-1 font-semibold text-slate-700 w-1/5">Kelas / Jenjang</td>
+                                    <td class="py-1 w-2">:</td>
+                                    <td class="py-1" id="preview-kelas-jenjang">VII / MTs / SMP</td>
+                                </tr>
+                                <tr class="border-b border-slate-200">
+                                    <td class="py-1 font-semibold text-slate-700">Model Pembelajaran</td>
+                                    <td class="py-1">:</td>
+                                    <td class="py-1 font-semibold text-emerald-800" id="preview-model-nama">ARKA (Experiential Learning)</td>
+                                    <td class="py-1 font-semibold text-slate-700">Pertemuan / Durasi</td>
+                                    <td class="py-1">:</td>
+                                    <td class="py-1" id="preview-pertemuan-durasi">Ke-1 s.d 5 / 5 Hari PJJ</td>
+                                </tr>
+                                <tr class="border-b border-slate-200">
+                                    <td class="py-1 font-semibold text-slate-700">Guru Pengampu</td>
+                                    <td class="py-1">:</td>
+                                    <td class="py-1" id="preview-guru">Ahmad Fauzi, S.Pd., M.Pd.</td>
+                                    <td class="py-1 font-semibold text-slate-700">Status Lembaga</td>
+                                    <td class="py-1">:</td>
+                                    <td class="py-1" id="preview-jenis">Negeri</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Sub-bagian 1: Capaian & Tujuan Pembelajaran -->
+                        <div class="space-y-2 mb-4">
+                            <h4 class="font-bold text-xs uppercase bg-emerald-900 text-white px-2.5 py-1 rounded flex justify-between items-center">
+                                <span>I. CAPAIAN & TUJUAN PEMBELAJARAN</span>
+                                <span class="font-arabic text-gold-300 text-sm">العِلْمُ نُورٌ</span>
+                            </h4>
+                            <div class="p-2.5 bg-slate-50 rounded border border-slate-200 space-y-1.5 text-[11px]">
+                                <p><strong class="text-emerald-950">Materi Ajar:</strong> <span id="preview-materi">Dampak Polutan & DIY Air Purifier</span></p>
+                                <p><strong class="text-emerald-950">Capaian Pembelajaran (CP):</strong> <span id="preview-cp">...</span></p>
+                                <p><strong class="text-emerald-950">Tujuan Pembelajaran (TP):</strong></p>
+                                <div id="preview-tp" class="pl-4 whitespace-pre-line text-slate-700">...</div>
+                                <p><strong class="text-emerald-950">Indikator Ketercapaian TP (IKTP):</strong></p>
+                                <div id="preview-iktp" class="pl-4 whitespace-pre-line text-slate-700">...</div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bagian 2: Integrasi Nilai & Dimensi Profil Lulusan -->
+                        <div class="space-y-2 mb-4">
+                            <h4 class="font-bold text-xs uppercase bg-emerald-900 text-white px-2.5 py-1 rounded">
+                                II. INTEGRASI KERANGKA KARAKTER & PROFIL LULUSAN
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[10.5px]">
+                                <!-- Preview Panca Cinta (Dynamic Hide/Show) -->
+                                <div id="preview-panca-cinta-wrapper" class="p-2 bg-emerald-50/70 rounded border border-emerald-200">
+                                    <p class="font-bold text-emerald-950 mb-1"><i class="fa-solid fa-heart text-gold-600 mr-1"></i> Integrasi Panca Cinta (Madrasah):</p>
+                                    <div id="preview-panca-cinta" class="flex flex-wrap gap-1"></div>
+                                </div>
+                                <div id="preview-dpl-wrapper" class="p-2 bg-slate-50 rounded border border-slate-200 col-span-1">
+                                    <p class="font-bold text-slate-900 mb-1"><i class="fa-solid fa-award text-emerald-700 mr-1"></i> 8 Dimensi Profil Lulusan (DPL):</p>
+                                    <div id="preview-dpl" class="flex flex-wrap gap-1"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bagian 3: Langkah Alur Pembelajaran Mendalam -->
+                        <div class="space-y-2 mb-4 print-break-inside-avoid">
+                            <h4 class="font-bold text-xs uppercase bg-emerald-900 text-white px-2.5 py-1 rounded">
+                                III. SKENARIO SINTAKS ALUR PEMBELAJARAN
+                            </h4>
+                            <div id="preview-alur-steps" class="space-y-2 text-[11px]">
+                                <!-- Steps Dynamic Rendered Here -->
+                            </div>
+                        </div>
+
+                        <!-- Tanda Tangan & Pengesahan -->
+                        <div class="mt-8 pt-4 border-t border-slate-300 grid grid-cols-2 text-center text-[11px] print-break-inside-avoid">
+                            <div>
+                                <p class="text-slate-500">Mengetahui,</p>
+                                <p class="font-bold text-slate-900 mb-12" id="preview-role-kepala">Kepala Madrasah / Sekolah</p>
+                                <p class="font-bold text-emerald-950 underline" id="preview-nama-kepala">Dr. H. M. Ridwan, M.Ag.</p>
+                                <p class="text-[10px] text-slate-600" id="preview-nip-kepala">NIP. 19720815 199803 1 003</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-500" id="preview-tempat-tanggal">Padang, 16 September 2026</p>
+                                <p class="font-bold text-slate-900 mb-12">Guru Mata Pelajaran</p>
+                                <p class="font-bold text-emerald-950 underline" id="preview-nama-guru">Ahmad Fauzi, S.Pd., M.Pd.</p>
+                                <p class="text-[10px] text-slate-600" id="preview-nip-guru">NIP. 19850412 201001 1 008</p>
+                            </div>
+                        </div>
+
+                        <!-- Running Footer / Page Number for A4 -->
+                        <div class="absolute bottom-3 right-6 text-[9px] text-slate-400 font-mono italic">
+                            Dokumen Resmi MyLearning Plan • Halaman 1 dari 1
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 2: ORANG TUA (PANDUAN PJJ DI RUMAH) -->
+        <!-- ========================================== -->
+        <div id="tab-ortu" class="tab-content hidden">
+            <div class="max-w-4xl mx-auto space-y-6">
+                <!-- Header Banner -->
+                <div class="bg-gradient-to-r from-emerald-900 via-teal-900 to-emerald-850 text-white p-6 rounded-2xl shadow-md border-b-4 border-gold-500 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="space-y-1">
+                        <span class="px-2.5 py-1 bg-gold-500 text-emerald-950 font-extrabold text-[10px] rounded uppercase tracking-wide">Mitra PJJ Bermakna</span>
+                        <h2 class="text-xl font-bold">Panduan Pendampingan Belajar di Rumah</h2>
+                        <p class="text-xs text-emerald-100">Mendampingi ananda dengan kasih sayang, tenang, dan tanpa beban berlebih selama PJJ Darurat Polusi.</p>
+                    </div>
+                    <div class="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-3xl text-gold-400">
+                        <i class="fa-solid fa-house-chimney-user"></i>
+                    </div>
+                </div>
+
+                <!-- Islamic Wisdom Quote -->
+                <div class="bg-amber-50 border-l-4 border-gold-500 p-4 rounded-r-xl text-slate-800 text-xs flex items-start gap-3">
+                    <i class="fa-solid fa-quote-left text-gold-600 text-xl mt-1"></i>
+                    <div>
+                        <p class="font-arabic text-base font-bold text-emerald-950">كُلُّكُمْ رَاعٍ وَكُلُّكُمْ مَسْئُولٌ عَنْ رَعِيَّتِهِ</p>
+                        <p class="italic text-slate-600 mt-0.5">"Setiap kalian adalah pemimpin, dan setiap kalian akan dimintai pertanggungjawaban atas apa yang dipimpinnya." (HR. Bukhari & Muslim)</p>
+                    </div>
+                </div>
+
+                <!-- Checklist Harian Orang Tua -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="text-sm font-bold text-emerald-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+                        <i class="fa-solid fa-list-check text-gold-600"></i> Checklist Pendampingan Harian Ortu (Centang jika selesai)
+                    </h3>
+
+                    <div class="space-y-3" id="parent-checklist-container">
+                        <!-- Interactive Checklist Items -->
+                        <label class="flex items-start gap-3 p-3 bg-slate-50 hover:bg-emerald-50/50 rounded-xl border border-slate-200 transition cursor-pointer">
+                            <input type="checkbox" onchange="updateParentProgress()" class="mt-0.5 h-4 w-4 accent-emerald-700 rounded">
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">Hari 1: Cek Kesehatan & Kualitas Udara</p>
+                                <p class="text-[11px] text-slate-500">Memastikan ananda meminum cukup air putih, tidak beraktivitas di luar rumah tanpa masker, dan mengecek tingkat AQI via HP.</p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-3 bg-slate-50 hover:bg-emerald-50/50 rounded-xl border border-slate-200 transition cursor-pointer">
+                            <input type="checkbox" onchange="updateParentProgress()" class="mt-0.5 h-4 w-4 accent-emerald-700 rounded">
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">Hari 2: Membantu Penyiapan Bahan Bekas DIY Filter</p>
+                                <p class="text-[11px] text-slate-500">Mendampingi anak mengumpulkan botol plastik/kain bekas mikrofiber untuk proyek penapis udara sederhana.</p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-3 bg-slate-50 hover:bg-emerald-50/50 rounded-xl border border-slate-200 transition cursor-pointer">
+                            <input type="checkbox" onchange="updateParentProgress()" class="mt-0.5 h-4 w-4 accent-emerald-700 rounded">
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">Hari 3: Apresiasi & Kehadiran Sesi Sync/Diskusi</p>
+                                <p class="text-[11px] text-slate-500">Memberikan dorongan positif saat anak melakukan uji coba filter dan menyapa guru saat check-in 30 menit.</p>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-3 bg-slate-50 hover:bg-emerald-50/50 rounded-xl border border-slate-200 transition cursor-pointer">
+                            <input type="checkbox" onchange="updateParentProgress()" class="mt-0.5 h-4 w-4 accent-emerald-700 rounded">
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">Hari 4 & 5: Pengumpulan Karya & Doa Bersama</p>
+                                <p class="text-[11px] text-slate-500">Mengambil foto hasil karya anak, mengirimkan ke Google Classroom/WA Guru, dan menutup pekan PJJ dengan syukur.</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Progress Bar Orang Tua -->
+                    <div class="pt-3 border-t border-slate-100">
+                        <div class="flex justify-between items-center text-xs mb-1">
+                            <span class="font-semibold text-slate-700">Kemajuan Pendampingan Ortu:</span>
+                            <span class="font-bold text-emerald-900" id="parent-progress-percent">0%</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                            <div id="parent-progress-bar" class="h-full bg-gradient-to-r from-emerald-600 to-gold-500 w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 3: MURID (CURIOSITY & MISSION BOARD) -->
+        <!-- ========================================== -->
+        <div id="tab-murid" class="tab-content hidden">
+            <div class="max-w-4xl mx-auto space-y-6">
+                <!-- Kids Hero Banner -->
+                <div class="bg-gradient-to-r from-gold-500 via-amber-500 to-emerald-900 text-slate-950 p-6 rounded-2xl shadow-lg relative overflow-hidden flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div class="space-y-1 relative z-10">
+                        <span class="px-3 py-1 bg-emerald-950 text-gold-400 font-extrabold text-[10px] rounded-full uppercase tracking-wider">Misi Eksplorasi Sains</span>
+                        <h2 class="text-2xl font-black tracking-tight text-emerald-950">Kartu Detektif Udara Bersih! 🕵️‍♂️🌱</h2>
+                        <p class="text-xs text-emerald-950 font-medium max-w-md">Selesaikan 3 Misi Rahasia untuk menjaga paru-paru dan menyelamatkan lingkungan tempat tinggalmu!</p>
+                    </div>
+                    <div class="relative z-10 w-20 h-20 rounded-2xl bg-white/20 backdrop-blur border border-white/40 flex items-center justify-center text-4xl shadow-inner">
+                        🚀
+                    </div>
+                </div>
+
+                <!-- Student Mission Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <!-- Misi 1 -->
+                    <div class="bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-emerald-600 transition shadow-sm space-y-3 relative flex flex-col justify-between">
+                        <div>
+                            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-900 font-bold flex items-center justify-center text-sm mb-2">
+                                01
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900">Misi 1: Uji Debu Jendela 🪟</h3>
+                            <p class="text-xs text-slate-500 mt-1">Tempelkan selotip transparan di luar kaca jendela rumahmu selama 24 jam. Amati debu yang tertangkap!</p>
+                        </div>
+                        <button onclick="toggleMission(this)" class="mission-btn w-full py-2 bg-slate-100 hover:bg-emerald-100 text-slate-700 hover:text-emerald-900 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5">
+                            <i class="fa-regular fa-circle-check"></i> Tandai Selesai (+50 Poin)
+                        </button>
+                    </div>
+
+                    <!-- Misi 2 -->
+                    <div class="bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-emerald-600 transition shadow-sm space-y-3 relative flex flex-col justify-between">
+                        <div>
+                            <div class="w-8 h-8 rounded-lg bg-gold-100 text-gold-800 font-bold flex items-center justify-center text-sm mb-2">
+                                02
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900">Misi 2: Pahlawan Masker 😷</h3>
+                            <p class="text-xs text-slate-500 mt-1">Hias maskermu dengan gambar atau kalimat ajakan menarik: <em>"Jaga Udaraku, Jaga Paru-Paruku!"</em></p>
+                        </div>
+                        <button onclick="toggleMission(this)" class="mission-btn w-full py-2 bg-slate-100 hover:bg-emerald-100 text-slate-700 hover:text-emerald-900 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5">
+                            <i class="fa-regular fa-circle-check"></i> Tandai Selesai (+50 Poin)
+                        </button>
+                    </div>
+
+                    <!-- Misi 3 -->
+                    <div class="bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-emerald-600 transition shadow-sm space-y-3 relative flex flex-col justify-between">
+                        <div>
+                            <div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-800 font-bold flex items-center justify-center text-sm mb-2">
+                                03
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900">Misi 3: Merakit Air Filter 🌬️</h3>
+                            <p class="text-xs text-slate-500 mt-1">Rakit penapis udara sederhana dengan kain bekas & kipas kecil. Dokumentasikan karyamu!</p>
+                        </div>
+                        <button onclick="toggleMission(this)" class="mission-btn w-full py-2 bg-slate-100 hover:bg-emerald-100 text-slate-700 hover:text-emerald-900 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5">
+                            <i class="fa-regular fa-circle-check"></i> Tandai Selesai (+100 Poin)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Student Level & Badge Status -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full bg-gold-400 text-emerald-950 flex items-center justify-center text-2xl font-bold shadow-md">
+                            🏆
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-900">Status Detektif Cilik Sains</h4>
+                            <p class="text-xs text-slate-500" id="student-rank">Tingkat: Pejuang Udara Bersih Sederhana</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-slate-500">Total Skor Pengalaman:</p>
+                        <p class="text-2xl font-extrabold text-emerald-900" id="student-score">0 XP</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Platform -->
+    <footer class="bg-slate-900 text-slate-300 py-6 border-t border-slate-800 text-xs no-print mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="font-bold text-gold-400 tracking-wide">
+                Dibuat oleh : Dedi Efendi, S.Pd.,M.PFis. (Pengawas Madrasah Kabupaten Agam) untuk Pendidikan Bermutu
+            </p>
+            <p class="text-[11px] text-slate-500">MyLearning Plan — Platform Perangkat Ajar & Pembelajaran Mendalam / PJJ Interaktif • 2026</p>
+        </div>
+    </footer>
+
+    <script>
+        // Syntaxes Data Structure for 7 Comprehensive Learning Models
+        const MODEL_STEPS = {
+            'model-arka': [
+                {
+                    title: '1. Aktivitas (Experiencing)',
+                    desc: 'Siswa memantau AQI harian via HP/Internet, menempelkan selotip di jendela rumah untuk menangkap debu polutan, dan mendokumentasikan hasilnya.'
+                },
+                {
+                    title: '2. Refleksi (Reflecting)',
+                    desc: 'Siswa merenungkan dampak polusi terhadap paru-paru dan merefleksikan pentingnya menjaga keseimbangan ekosistem alam.'
+                },
+                {
+                    title: '3. Konseptualisasi (Conceptualizing)',
+                    desc: 'Siswa mempelajari mekanisme filtrasi mekanis (PM2.5) dan prinsip kerja filter udara sederhana bersama guru melalui panduan mikro.'
+                },
+                {
+                    title: '4. Aksi (Acting & Creating)',
+                    desc: 'Siswa merakit prototype penapis udara sederhana (DIY Air Purifier) dari bahan bekas/mikrofiber dan membuat poster ajakan hidup sehat.'
+                }
+            ],
+            'model-3m': [
+                {
+                    title: '1. Memahami (Understanding)',
+                    desc: 'Siswa mempelajari materi bahaya zat polutan udara, dampaknya pada organ pernapasan, serta konsep dasar penapis udara.'
+                },
+                {
+                    title: '2. Mengaplikasikan (Applying)',
+                    desc: 'Siswa merancang dan merakit produk penapis udara sederhana (*DIY filter*) dari bahan hemat lingkungan di rumah.'
+                },
+                {
+                    title: '3. Merefleksi (Reflecting)',
+                    desc: 'Siswa mengevaluasi efektivitas produknya, menyusun laporan singkat, serta menyampaikan komitmen menjaga kesehatan diri dan sesama.'
+                }
+            ],
+            'model-pjbl': [
+                {
+                    title: 'Sintaks 1: Pertanyaan Mendasar (Essential Question)',
+                    desc: 'Siswa mengidentifikasi masalah utama polusi udara sekitar rumah dan merumuskan pertanyaan: "Bagaimana menciptakan udara segar di ruang tidur dengan alat sederhana?"'
+                },
+                {
+                    title: 'Sintaks 2: Desain Perencanaan Proyek (Design Plan)',
+                    desc: 'Siswa menentukan jenis alat, alat/bahan bekas yang dibutuhkan, serta sketsa awal rancangan penapis udara.'
+                },
+                {
+                    title: 'Sintaks 3: Menyusun Jadwal Pembuatan (Create Schedule)',
+                    desc: 'Siswa membagi alokasi waktu 5 hari PJJ untuk riset, pengumpulan bahan, perakitan, dan pengujian.'
+                },
+                {
+                    title: 'Sintaks 4: Memonitor Progres Proyek (Monitor Progress)',
+                    desc: 'Siswa mendokumentasikan foto/video langkah perakitan dan melaporkan kendala kepada guru pendamping.'
+                },
+                {
+                    title: 'Sintaks 5: Menguji Hasil (Assess the Outcome)',
+                    desc: 'Siswa menguji kebersihan aliran udara dari filter buatan dan mengukur parameter keberhasilan.'
+                },
+                {
+                    title: 'Sintaks 6: Evaluasi Pengalaman (Evaluate Experience)',
+                    desc: 'Siswa dan guru melakukan refleksi bersama mengenai kelebihan, kekurangan, dan rencana pengembangan alat.'
+                }
+            ],
+            'model-pbl': [
+                {
+                    title: 'Sintaks 1: Orientasi Siswa pada Masalah',
+                    desc: 'Siswa menganalisis fenomena tingginya angka ISPA akibat polusi udara buruk melalui artikel/video kasus kontekstual.'
+                },
+                {
+                    title: 'Sintaks 2: Mengorganisasi Siswa untuk Belajar',
+                    desc: 'Siswa menetapkan batasan masalah yang akan diselesaikan dan membagi peran tugas belajar mandiri di rumah.'
+                },
+                {
+                    title: 'Sintaks 3: Membimbing Penyelidikan Mandiri',
+                    desc: 'Siswa mengumpulkan data AQI harian dan melakukan eksperimen penangkapan debu sederhana.'
+                },
+                {
+                    title: 'Sintaks 4: Mengembangkan & Menyajikan Hasil Karya',
+                    desc: 'Siswa menyusun laporan analisis dampak polusi dan mempresentasikan prototype solusi fisiknya.'
+                },
+                {
+                    title: 'Sintaks 5: Menganalisis & Evaluasi Proses Pemecahan Masalah',
+                    desc: 'Siswa mengevaluasi efektivitas solusi yang ditawarkan dan memberikan saran perbaikan untuk kondisi mendatang.'
+                }
+            ],
+            'model-5e': [
+                {
+                    title: '1. Engagement (Pembangkitan Minat)',
+                    desc: 'Guru memberikan pertanyaan pemantik dan demonstrasi singkat tentang kotornya udara yang tidak terlihat mata.'
+                },
+                {
+                    title: '2. Exploration (Eksplorasi)',
+                    desc: 'Siswa mengumpulkan data tingkat polusi lokal dan menguji coba berbagai bahan penyaring (kertas, kain, busa).'
+                },
+                {
+                    title: '3. Explanation (Penjelasan Konsep)',
+                    desc: 'Siswa mendefinisikan konsep particulate matter (PM2.5) dan prinsip filtrasi berdasarkan hasil eksplorasi.'
+                },
+                {
+                    title: '4. Elaboration (Pengembangan Apliatif)',
+                    desc: 'Siswa menerapkan pemahamannya untuk merakit alat penapis udara rumah tangga skala kecil.'
+                },
+                {
+                    title: '5. Evaluation (Evaluasi Pengetahuan)',
+                    desc: 'Siswa menyelesaikan kuis reflektif dan mengunggah produk karya untuk dinilai sesuai rubrik.'
+                }
+            ],
+            'model-discovery': [
+                {
+                    title: 'Tahap 1: Stimulation (Pemberian Rangsangan)',
+                    desc: 'Siswa mengamati gambar organ paru-paru sehat vs paru-paru terdampak polutan.'
+                },
+                {
+                    title: 'Tahap 2: Problem Statement (Identifikasi Masalah)',
+                    desc: 'Siswa merumuskan hipotesis tentang jenis bahan di rumah yang paling efektif menyaring debu polusi.'
+                },
+                {
+                    title: 'Tahap 3: Data Collection (Pengumpulan Data)',
+                    desc: 'Siswa mencatat jumlah partikel debu yang menempel pada media uji selotip dan kain selama 24 jam.'
+                },
+                {
+                    title: 'Tahap 4: Data Processing (Pengolahan Data)',
+                    desc: 'Siswa membandingkan kerapatan materi penyaring dengan tingkat kebersihan udara yang dihasilkan.'
+                },
+                {
+                    title: 'Tahap 5: Verification (Pembuktian)',
+                    desc: 'Siswa mencocokkan hasil eksperimennya dengan teori IPA di buku teks atau penjelasan guru.'
+                },
+                {
+                    title: 'Tahap 6: Generalization (Penarikan Kesimpulan)',
+                    desc: 'Siswa menarik kesimpulan umum mengenai prinsip perlindungan diri dari bahaya udara kotor.'
+                }
+            ],
+            'model-gamified': [
+                {
+                    title: 'Fase 1: Quest & Hook (Pemicu Tantangan)',
+                    desc: 'Siswa mendapatkan "Kartu Misi Detektif Udara Bersih" dan memilih target tantangan yang akan dituntaskan.'
+                },
+                {
+                    title: 'Fase 2: Hands-on Challenge (Aksi Eksperimen)',
+                    desc: 'Siswa melakukan aksi lapangan di rumah seperti merakit filter atau kreasi masker pahlawan.'
+                },
+                {
+                    title: 'Fase 3: Reflective Debrief (Refleksi Pengalaman)',
+                    desc: 'Siswa mencatat poin pelajaran utama dan menceritakan rintangan yang berhasil diatasi.'
+                },
+                {
+                    title: 'Fase 4: Real-World Mastery (Pemberian Badges & Pengakuan)',
+                    desc: 'Siswa mendapatkan skor XP dan lencana "Pahlawan Lingkungan" serta membagikan karyanya.'
+                }
+            ]
+        };
+
+        // Toggle Kategori Lembaga (Madrasah vs Sekolah Umum)
+        function toggleKategoriLembaga() {
+            const kategori = document.getElementById('input-kategori-lembaga').value;
+            const containerPancaCinta = document.getElementById('container-panca-cinta');
+            const previewPancaCintaWrapper = document.getElementById('preview-panca-cinta-wrapper');
+            const lblMadrasah = document.getElementById('lbl-nama-madrasah');
+            const previewMadrasahHeader = document.getElementById('preview-sub-header');
+            const previewBismillah = document.getElementById('preview-bismillah');
+            const previewRoleKepala = document.getElementById('preview-role-kepala');
+
+            if (kategori === 'madrasah') {
+                containerPancaCinta.classList.remove('hidden');
+                previewPancaCintaWrapper.classList.remove('hidden');
+                lblMadrasah.innerText = "Nama Madrasah";
+                previewMadrasahHeader.innerText = "PERANGKAT AJAR PEMBELAJARAN MENDALAM (DEEP LEARNING) KBC";
+                previewBismillah.classList.remove('hidden');
+                previewRoleKepala.innerText = "Kepala Madrasah";
+            } else {
+                containerPancaCinta.classList.add('hidden');
+                previewPancaCintaWrapper.classList.add('hidden');
+                lblMadrasah.innerText = "Nama Sekolah";
+                previewMadrasahHeader.innerText = "PERANGKAT AJAR PEMBELAJARAN MENDALAM (DEEP LEARNING)";
+                previewBismillah.classList.add('hidden');
+                previewRoleKepala.innerText = "Kepala Sekolah";
+            }
+
+            generateModule();
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-emerald-950', 'shadow');
+                btn.classList.add('text-emerald-100');
+            });
+
+            const activeContent = document.getElementById(`tab-${tabName}`);
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+            
+            if (activeContent && activeBtn) {
+                activeContent.classList.remove('hidden');
+                activeBtn.classList.add('bg-gold-500', 'text-emerald-950', 'shadow');
+                activeBtn.classList.remove('text-emerald-100');
+            }
+        }
+
+        // Custom Toast Notification (No alert() used)
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-3 rounded-xl shadow-lg text-xs font-semibold flex items-center gap-2 transition-all transform translate-y-2 opacity-0 pointer-events-auto ${
+                type === 'success' ? 'bg-emerald-900 text-white border border-gold-400' : 'bg-slate-800 text-white'
+            }`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-gold-400"></i> ${message}`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Load Preset Sample Data (PJJ Polusi Udara)
+        function loadSampleData() {
+            document.getElementById('input-kategori-lembaga').value = "madrasah";
+            document.getElementById('input-madrasah').value = "MTs Negeri 1 Kota Padang";
+            document.getElementById('input-jenis').value = "Negeri";
+            document.getElementById('input-jenjang').value = "MTs / SMP";
+            document.getElementById('input-kelas').value = "VII (Tujuh)";
+            document.getElementById('input-mapel').value = "IPA Terpadu (PjBL Tematik)";
+            document.getElementById('input-guru').value = "Ahmad Fauzi, S.Pd., M.Pd.";
+            document.getElementById('input-nip-guru').value = "19850412 201001 1 008";
+            document.getElementById('input-kepala').value = "Dr. H. M. Ridwan, M.Ag.";
+            document.getElementById('input-nip-kepala').value = "19720815 199803 1 003";
+            document.getElementById('input-pertemuan').value = "1 s.d 5 (Pekan PJJ Darurat)";
+            document.getElementById('input-durasi').value = "5 Hari (Asinkron & Sync 30 mnt/hari)";
+            document.getElementById('input-model').value = "model-arka";
+            document.getElementById('input-cp').value = "Peserta didik mampu menganalisis pengaruh polusi udara terhadap kesehatan organ pernapasan manusia dan merancang solusi teknologi sederhana penapis udara secara kreatif dan bermakna.";
+            document.getElementById('input-tp').value = "1. Menganalisis tingkat AQI lokal dan dampaknya terhadap tubuh.\n2. Membuat prototype penapis udara (DIY Air Purifier) dari bahan hemat lingkungan.\n3. Menyusun pesan imbauan hidup sehat sebagai bentuk kepedulian sesama.";
+            document.getElementById('input-iktp').value = "1. Siswa dapat mencatat data AQI 3 hari berturut-turut.\n2. Siswa berhasil merakit filter udara sederhana.\n3. Siswa dapat mempresentasikan refleksi hikmah menjaga kelestarian lingkungan.";
+            document.getElementById('input-materi').value = "Dampak Polutan PM2.5 & Pembuatan Filter Udara Sederhana (PjBL Terpadu PJJ)";
+            document.getElementById('input-tantangan').value = "Pembelajaran Jarak Jauh (PJJ) Darurat Polusi Udara Buruk & Pembatasan Aktivitas Outdoor";
+            document.getElementById('input-tanggal').value = "Lubuk Basung, 16 September 2026";
+
+            toggleKategoriLembaga();
+            showToast("Contoh Perangkat PJJ Polusi Udara Berhasil Dimuat!");
+        }
+
+        // Generate Module & Update A4 Live Preview
+        function generateModule() {
+            const isMadrasah = document.getElementById('input-kategori-lembaga').value === 'madrasah';
+
+            // Text values
+            document.getElementById('preview-madrasah').innerText = document.getElementById('input-madrasah').value.toUpperCase();
+            document.getElementById('preview-mapel').innerText = document.getElementById('input-mapel').value;
+            document.getElementById('preview-kelas-jenjang').innerText = `${document.getElementById('input-kelas').value} / ${document.getElementById('input-jenjang').value}`;
+            document.getElementById('preview-pertemuan-durasi').innerText = `${document.getElementById('input-pertemuan').value} (${document.getElementById('input-durasi').value})`;
+            document.getElementById('preview-guru').innerText = document.getElementById('input-guru').value;
+            document.getElementById('preview-jenis').innerText = document.getElementById('input-jenis').value;
+            document.getElementById('preview-materi').innerText = document.getElementById('input-materi').value;
+            document.getElementById('preview-cp').innerText = document.getElementById('input-cp').value;
+            document.getElementById('preview-tp').innerText = document.getElementById('input-tp').value;
+            document.getElementById('preview-iktp').innerText = document.getElementById('input-iktp').value;
+            document.getElementById('preview-tantangan-badge').innerText = `Tantangan Khusus: ${document.getElementById('input-tantangan').value}`;
+
+            // Signatures
+            document.getElementById('preview-nama-guru').innerText = document.getElementById('input-guru').value;
+            document.getElementById('preview-nip-guru').innerText = `NIP. ${document.getElementById('input-nip-guru').value}`;
+            document.getElementById('preview-nama-kepala').innerText = document.getElementById('input-kepala').value;
+            document.getElementById('preview-nip-kepala').innerText = `NIP. ${document.getElementById('input-nip-kepala').value}`;
+            document.getElementById('preview-tempat-tanggal').innerText = document.getElementById('input-tanggal').value;
+
+            // Selected Model Syntax Name
+            const selectedModelKey = document.getElementById('input-model').value;
+            const modelSelectObj = document.getElementById('input-model');
+            const modelName = modelSelectObj.options[modelSelectObj.selectedIndex].text;
+            document.getElementById('preview-model-nama').innerText = modelName;
+
+            // Render Steps
+            const stepsContainer = document.getElementById('preview-alur-steps');
+            stepsContainer.innerHTML = '';
+            if (MODEL_STEPS[selectedModelKey]) {
+                MODEL_STEPS[selectedModelKey].forEach(step => {
+                    const stepDiv = document.createElement('div');
+                    stepDiv.className = 'p-2 bg-slate-50 rounded border border-slate-200';
+                    stepDiv.innerHTML = `
+                        <p class="font-bold text-emerald-900 mb-0.5">${step.title}</p>
+                        <p class="text-slate-700 leading-relaxed text-[10.5px]">${step.desc}</p>
+                    `;
+                    stepsContainer.appendChild(stepDiv);
+                });
+            }
+
+            // Render Panca Cinta Badges (Only if Madrasah)
+            const pancaCintaContainer = document.getElementById('preview-panca-cinta');
+            pancaCintaContainer.innerHTML = '';
+            if (isMadrasah) {
+                document.querySelectorAll('.panca-cinta-cb:checked').forEach(cb => {
+                    const badge = document.createElement('span');
+                    badge.className = 'px-2 py-0.5 bg-emerald-700 text-white font-semibold rounded text-[9.5px]';
+                    badge.innerText = cb.value;
+                    pancaCintaContainer.appendChild(badge);
+                });
+            }
+
+            // Render DPL Badges
+            const dplContainer = document.getElementById('preview-dpl');
+            dplContainer.innerHTML = '';
+            document.querySelectorAll('.dpl-cb:checked').forEach(cb => {
+                const badge = document.createElement('span');
+                badge.className = 'px-2 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 font-medium rounded text-[9.5px]';
+                badge.innerText = cb.value;
+                dplContainer.appendChild(badge);
+            });
+
+            showToast("Dokumen Perangkat Ajar A4 Diperbarui!");
+        }
+
+        // Parent Tab Logic
+        function updateParentProgress() {
+            const checkboxes = document.querySelectorAll('#parent-checklist-container input[type="checkbox"]');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const percent = Math.round((checkedCount / checkboxes.length) * 100);
+
+            document.getElementById('parent-progress-bar').style.width = `${percent}%`;
+            document.getElementById('parent-progress-percent').innerText = `${percent}%`;
+
+            if (percent === 100) {
+                showToast("Terima kasih Ayah/Bunda telah mendampingi PJJ secara maksimal! ❤️");
+            }
+        }
+
+        // Student Mission Logic
+        let studentScore = 0;
+        function toggleMission(btn) {
+            const isCompleted = btn.classList.contains('bg-emerald-700');
+
+            if (!isCompleted) {
+                btn.classList.remove('bg-slate-100', 'text-slate-700');
+                btn.classList.add('bg-emerald-700', 'text-white');
+                btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Selesai! ✨`;
+                studentScore += 50;
+                showToast("Hebat! Misi Berhasil Dilesaikan! +50 XP 🚀");
+            } else {
+                btn.classList.remove('bg-emerald-700', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-700');
+                btn.innerHTML = `<i class="fa-regular fa-circle-check"></i> Tandai Selesai (+50 Poin)`;
+                studentScore = Math.max(0, studentScore - 50);
+            }
+
+            document.getElementById('student-score').innerText = `${studentScore} XP`;
+
+            // Update Rank
+            const rankText = document.getElementById('student-rank');
+            if (studentScore >= 150) {
+                rankText.innerText = "Tingkat: Pahlawan Lingkungan Utama 🌟";
+            } else if (studentScore >= 50) {
+                rankText.innerText = "Tingkat: Detektif Udara Handal ⭐";
+            } else {
+                rankText.innerText = "Tingkat: Pejuang Udara Bersih Sederhana";
+            }
+        }
+
+        // Window Load Initialization
+        window.onload = function() {
+            toggleKategoriLembaga();
+        };
+    </script>
+</body>
+</html>
